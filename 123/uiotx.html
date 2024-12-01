@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date Planner</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Times New Roman', sans-serif; font-size: 16px;">
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .slide {
+            display: none;
+            text-align: center;
+        }
+        .active {
+            display: block;
+        }
+        img {
+            max-width: 80%;
+            border-radius: 10px;
+        }
+        .arrow, button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Slide 1 -->
+    <div class="slide active" id="slide1">
+        <img src="gm.jpg" alt="Good Morning">
+        <h1>MORNING BROOO!</h1>
+        <button class="arrow" onclick="goToSlide(2)">Next ➡</button>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide" id="slide2">
+        <h1>Waiting to see you!</h1>
+        <p id="countdown"></p>
+        <button class="arrow" onclick="goToSlide(3)">Next ➡</button>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide" id="slide3">
+        <h1>Can we go on a dinner date?</h1>
+        <div class="options">
+            <button onclick="goToSlide(4)">Yes</button>
+            <button onclick="goToSlide(4)">Yayyy. Lezzgo!</button>
+        </div>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="slide" id="slide4">
+        <h1>Select your preference</h1>
+        <div class="options">
+            <button onclick="showOptions('Dinner')">Dinner</button>
+            <button onclick="showOptions('Drinks+Dinner')">Drinks+Dinner</button>
+        </div>
+    </div>
+
+    <!-- Dinner Options -->
+    <div class="slide" id="dinnerOptions">
+        <h1>Choose a Dinner Place</h1>
+        <div class="options">
+            <button onclick="finalChoice('Olive Bistro')">Olive Bistro</button>
+            <button onclick="finalChoice('Sanctuary')">Sanctuary</button>
+            <button onclick="finalChoice('Jewel of Nizam')">Jewel of Nizam</button>
+            <button onclick="finalChoice('UR Choice')">UR Choice</button>
+        </div>
+    </div>
+
+    <!-- Drinks+Dinner Options -->
+    <div class="slide" id="drinksDinnerOptions">
+        <h1>Choose Drinks+Dinner Place</h1>
+        <div class="options">
+            <button onclick="finalChoice('Broadway')">Broadway</button>
+            <button onclick="finalChoice('Tabularasa')">Tabularasa</button>
+            <button onclick="finalChoice('XORA')">XORA</button>
+            <button onclick="finalChoice('UR Choice')">UR Choice</button>
+        </div>
+    </div>
+
+    <!-- Final Slide -->
+    <div class="slide" id="finalSlide">
+        <h1>You Selected:</h1>
+        <p id="finalChoice"></p>
+        <p>Sarey le ipudu edi select chesavo SS pampiyu FAST, ASAP, URGENT, IMMEDIATE </p>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+
+        // Function to navigate to the next slide
+        function goToSlide(slideNumber) {
+            document.querySelector(`#slide${currentSlide}`).classList.remove('active');
+            document.querySelector(`#slide${slideNumber}`).classList.add('active');
+            currentSlide = slideNumber;
+        }
+
+        // Function to show options based on choice
+        function showOptions(choice) {
+            document.querySelector(`#slide4`).classList.remove('active');
+            if (choice === 'Dinner') {
+                document.querySelector(`#dinnerOptions`).classList.add('active');
+            } else if (choice === 'Drinks+Dinner') {
+                document.querySelector(`#drinksDinnerOptions`).classList.add('active');
+            }
+        }
+
+        // Function to finalize choice
+        function finalChoice(choice) {
+            document.querySelector(`#dinnerOptions`).classList.remove('active');
+            document.querySelector(`#drinksDinnerOptions`).classList.remove('active');
+            document.querySelector(`#finalSlide`).classList.add('active');
+            document.querySelector(`#finalChoice`).innerText = choice;
+        }
+
+        // Countdown Timer
+        function countdownTimer() {
+            const eventDate = new Date("December 27, 2024").getTime();
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").innerHTML =
+                `${days} Days ${hours} Hours ${minutes} Minutes ${seconds} Seconds`;
+
+            if (distance < 0) {
+                document.getElementById("countdown").innerHTML = "The wait is over!";
+            }
+        }
+
+        setInterval(countdownTimer, 1000);
+    </script>
+</body>
+</html>
